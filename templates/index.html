@@ -21,42 +21,56 @@
 	<div class= 'col-md-2'>
 		<p class = "text-central"> Get 2 points for each Top 5 result!
 		<ul class= "list-group">
-			<li class= "list-group-item list-group-item-info">Dog<span class="badge">correct</span></li>
-			<li class= "list-group-item list-group-item-info">2ed</li>
-			<li class= "list-group-item list-group-item-info">3rd</li>
-			<li class= "list-group-item list-group-item-info">4th</li>
-			<li class= "list-group-item list-group-item-info">5th</li>
+			{% for a in one %}
+				
+				{% if order and one[order] == a %}
+					<li class= "list-group-item list-group-item-info">{{a}}</li>
+				{% else %}
+					<li class= "list-group-item list-group-item-info">???</li>
+				{% endif %}
+			{% endfor %}
 		<ul>
 	</div>
 	<div class= 'col-md-2'></div>
 	<div class= 'col-md-2'>
 		<p class = "text-central"> Get 1 points for each 6-10 results!
 		<ul class= "list-group">
-			<li class= "list-group-item list-group-item-info">6th</li>
-			<li class= "list-group-item list-group-item-info">7th</li>
-			<li class= "list-group-item list-group-item-info">8th</li>
-			<li class= "list-group-item list-group-item-info">9th</li>
-			<li class= "list-group-item list-group-item-info">10th</li>
+			<li class= "list-group-item list-group-item-info" id = '1st'>\</li>
+			<li class= "list-group-item list-group-item-info" id = '2nd'>\</li>
+			<li class= "list-group-item list-group-item-info" id = '3rd'>\</li>
+			<li class= "list-group-item list-group-item-info" id = '4th'>\</li>
+			<li class= "list-group-item list-group-item-info" id = '5th'>\</li>	
 		<ul>
 	</div>
+	<h3>Highest Score: 200</h3>
+	<h3>Current Score: 100</h3>
+	
 	</div>
 	
 	<div class = "row">
 		<div class= 'text-center'>
-			<h3>Highest Score: 200</h3>
-			<h3>Current Score: 100</h3>
+			<div class = "col-md-3"></div>
+			<div class = "col-md-5">
+				<h4 class = "text-left">Question:</h4>
+				<p class = "text-left">{{ question }}</p>			
+			</div>
+
 		</div>
 	</div>
 	
 	<div class = "row">
 		<div class = "col-md-5"></div>
-		<form class = "col-md-2">
-		  <div class="form-group">
-			<label for = "answer">Answer:</label>
-			<input class="form-control" id="answer">
-		  </div>
-		  <button type="submit" class="btn btn-default ">Submit</button>
-		</form>
+		
+			
+			<form class = "col-md-2"  action = "{{ url_for('index') }}", method = 'post'>
+			  <div class="form-group">
+				<label for = "answer">Answer:</label>
+				<input class="form-control" name="answer">
+			  </div>
+			  <button type="submit" class="btn btn-default" name = "submit">Submit</button>
+				{% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}</p>
+			  
+			</form>
 	</div>
 	
 	</div>
