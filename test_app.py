@@ -10,3 +10,4 @@ class test( unittest.TestCase):
         test = app.test_client(self)
         response = test.get("/", content_type = "html/txt")
         self.assertEqual(response.status_code, 200)
+

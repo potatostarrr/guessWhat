@@ -2,7 +2,12 @@
 <html>
 <head>
 		<title>Welcome!</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../static/style.css" type='text/css'>
+		<link rel="stylesheet" href="../static/indexstyle.css" type='text/css'>
+		<script src = "../static/login.js"> </script>
 </head>
 
 <body>
@@ -12,8 +17,17 @@
 			<h1>Welcome to GuessWhat!</h1>
 			<p>Guess What's the most popular searching on the Internet</p>
 		</div>
-		<div class = "col-md-1 text-right">
-			<h3>Login</h3>
+		<div class="container">
+			<div class="row">
+				{% if session["username"]%}
+					<p> Welcome back! {{session["username"]}} </p>
+					<form action="{{ url_for('index') }}" method=post>
+					{{ signoutform.submit(class_ = "btn btn-primary btn-lg") }}
+					</form>
+				{% else %}
+					<p class="text-center"><a href="#" class="btn btn-primary btn-lg" role="button" data-toggle="modal" data-target="#login-modal">Open Login Modal</a></p>
+				{% endif %}
+			</div>
 		</div>
 	</div>
 	<div class = 'row'>
@@ -21,10 +35,9 @@
 	<div class= 'col-md-2'>
 		<p class = "text-central"> Get 2 points for each Top 5 result!
 		<ul class= "list-group">
-			{% for a in one %}
-				
-				{% if order and one[order] == a %}
-					<li class= "list-group-item list-group-item-info">{{a}}</li>
+			{% for a in range(5) %}	
+				{% if a in order %}
+					<li class= "list-group-item list-group-item-info">{{one[a]}}</li>
 				{% else %}
 					<li class= "list-group-item list-group-item-info">???</li>
 				{% endif %}
@@ -35,14 +48,16 @@
 	<div class= 'col-md-2'>
 		<p class = "text-central"> Get 1 points for each 6-10 results!
 		<ul class= "list-group">
-			<li class= "list-group-item list-group-item-info" id = '1st'>\</li>
-			<li class= "list-group-item list-group-item-info" id = '2nd'>\</li>
-			<li class= "list-group-item list-group-item-info" id = '3rd'>\</li>
-			<li class= "list-group-item list-group-item-info" id = '4th'>\</li>
-			<li class= "list-group-item list-group-item-info" id = '5th'>\</li>	
+			{% for a in range(5,10) %}	
+				{% if a in order %}
+					<li class= "list-group-item list-group-item-info">{{six[a-5]}}</li>
+				{% else %}
+					<li class= "list-group-item list-group-item-info">???</li>
+				{% endif %}
+			{% endfor %}
 		<ul>
 	</div>
-	<h3>Highest Score: 200</h3>
+	<h3>Highest Score: {{session["score"]}}</h3>
 	<h3>Current Score: 100</h3>
 	
 	</div>
@@ -50,31 +65,28 @@
 	<div class = "row">
 		<div class= 'text-center'>
 			<div class = "col-md-3"></div>
-			<div class = "col-md-5">
+			<div class = "col-md-2">
 				<h4 class = "text-left">Question:</h4>
-				<p class = "text-left">{{ question }}</p>			
+				<p class = "text-left">{{ question }}</p>	
+				<form action = "{{ url_for('index')}}", method = "post">
+					<button type = 'submit' class = 'btn pull-left' name = "skip">Skip</button>
+				</form>	
 			</div>
+			<div class = "col-md-2">
+				<form  action = "{{ url_for('index') }}", method = 'post'>
+				  <div class="form-group">
+					<label for = "answer">Answer:</label>
+					<input class="form-control" name="answer">
+				  </div>
+				  <button type="submit" class="btn pull-left" name = "submit">Submit</button>
+					{% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}</p>			  
+				</form>
+			</div>
+			
 
 		</div>
 	</div>
-	
-	<div class = "row">
-		<div class = "col-md-5"></div>
-		
-			
-			<form class = "col-md-2"  action = "{{ url_for('index') }}", method = 'post'>
-			  <div class="form-group">
-				<label for = "answer">Answer:</label>
-				<input class="form-control" name="answer">
-			  </div>
-			  <button type="submit" class="btn btn-default" name = "submit">Submit</button>
-				{% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}</p>
-			  
-			</form>
-	</div>
-	
-	</div>
-	
+	{% block login %}{% endblock %}
 	
 
 
