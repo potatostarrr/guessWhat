@@ -1,5 +1,5 @@
 
-QUESTION = "i love my "
+QUESTION = ['i%20love%20my', 'i%20hate%20my']
 ONE = []
 SIX = []
 ORDER = []

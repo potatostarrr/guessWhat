@@ -40,7 +40,6 @@ class SignupForm(Form):
   # create validate function for this form
   def validate(self):
     if not Form.validate(self):
-      print("1")
       return False
     if not Form.is_submitted(self):
         return False
@@ -64,10 +63,14 @@ class SigninForm(Form):
             return False
         if not Form.is_submitted(self):
             return False
+
         user = User.query.filter_by(username = self.username.data.lower()).first()
+
         if user and user.check_password(self.password.data):
             return True
         return False
 
 class SignoutForm(Form):
     submit = SubmitField("Signout")
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)

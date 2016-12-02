@@ -7,7 +7,6 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="../static/style.css" type='text/css'>
 		<link rel="stylesheet" href="../static/indexstyle.css" type='text/css'>
-		<script src = "../static/login.js"> </script>
 </head>
 
 <body>
@@ -20,10 +19,11 @@
 		<div class="container">
 			<div class="row">
 				{% if session["username"]%}
-					<p> Welcome back! {{session["username"]}} </p>
-					<form action="{{ url_for('index') }}" method=post>
-					{{ signoutform.submit(class_ = "btn btn-primary btn-lg") }}
+					<form action="{{ url_for("index") }}" method=post>
+						{{ signoutform.hidden_tag() }}
+						{{ signoutform.submit(class_ = "btn btn-primary btn-lg") }}
 					</form>
+					<p> Welcome back! {{session["username"]}} </p>
 				{% else %}
 					<p class="text-center"><a href="#" class="btn btn-primary btn-lg" role="button" data-toggle="modal" data-target="#login-modal">Open Login Modal</a></p>
 				{% endif %}
@@ -34,62 +34,65 @@
 	<div class= 'col-md-3'></div>
 	<div class= 'col-md-2'>
 		<p class = "text-central"> Get 2 points for each Top 5 result!
-		<ul class= "list-group">
-			{% for a in range(5) %}	
-				{% if a in order %}
-					<li class= "list-group-item list-group-item-info">{{one[a]}}</li>
-				{% else %}
-					<li class= "list-group-item list-group-item-info">???</li>
-				{% endif %}
-			{% endfor %}
+		<ul id = "top5" class= "list-group">
+			<li class= "list-group-item list-group-item-info">???</li>
 		<ul>
 	</div>
 	<div class= 'col-md-2'></div>
 	<div class= 'col-md-2'>
 		<p class = "text-central"> Get 1 points for each 6-10 results!
-		<ul class= "list-group">
-			{% for a in range(5,10) %}	
-				{% if a in order %}
-					<li class= "list-group-item list-group-item-info">{{six[a-5]}}</li>
-				{% else %}
-					<li class= "list-group-item list-group-item-info">???</li>
-				{% endif %}
-			{% endfor %}
+		<ul id ="top10" class= "list-group">
+			<li class= "list-group-item list-group-item-info">???</li>		
 		<ul>
 	</div>
-	<h3>Highest Score: {{session["score"]}}</h3>
-	<h3>Current Score: 100</h3>
+	<h3 >Highest Score: <strong id = 'highscore'>{{session["score"]}}</strong></h3>
+	<h3 id = 'score'>Current Score: 0</h3>
 	
 	</div>
 	
-	<div class = "row">
+	<div class = "row show" id = "answerArea" >
 		<div class= 'text-center'>
 			<div class = "col-md-3"></div>
 			<div class = "col-md-2">
 				<h4 class = "text-left">Question:</h4>
-				<p class = "text-left">{{ question }}</p>	
-				<form action = "{{ url_for('index')}}", method = "post">
-					<button type = 'submit' class = 'btn pull-left' name = "skip">Skip</button>
-				</form>	
+				<p id = "question" class = "text-left"></p>	
+				<button id = "skip" class = 'btn pull-left' name = "skip">Skip</button>
 			</div>
 			<div class = "col-md-2">
-				<form  action = "{{ url_for('index') }}", method = 'post'>
-				  <div class="form-group">
-					<label for = "answer">Answer:</label>
-					<input class="form-control" name="answer">
-				  </div>
-				  <button type="submit" class="btn pull-left" name = "submit">Submit</button>
-					{% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}</p>			  
-				</form>
+				  <div class="form-group has-danger" id = "answerform">
+					<label for = "useranswer">Answer:</label>
+					<input id =  "useranswer" class="form-control" name="answer" placeholder="Enter Answer ">
+				  </div>	  
+				<button id = "submitanswer" type="submit" class="btn pull-left" name = "submit">Submit</button>
 			</div>
-			
-
+			<div class= "col-md-2">
+				<h3 >You can try <strong id = "chance">10</strong> times</h3>
+			</div>
 		</div>
 	</div>
+	
+	<div class = "row hidden" id = "restartArea" >
+		<div class = "col-md-12 text-center">
+			<h2>Game Over</h2>
+			<h3>Do you want to try again?</h3>
+			<button id= "restart" class = "btn">Restart</button>
+		</div>
+	</div>
+	
+	
 	{% block login %}{% endblock %}
 	
 
-
+	<script type='text/javascript'>
+		var question = {{ question|tojson|safe }};
+		if ({{session["score"]}} > 0)
+		{
+			var highscore = {{session['score']}};
+		}
+		else{var highscore = 0;}
+	</script>
+	<script type='text/javascript' src = "../static/login.js"> </script>
+	<script type='text/javascript' src = "../static/score.js"> </script>
 </body>
 
 </html>
