@@ -19,7 +19,7 @@ class User(db.Model):
 
   #initialnize
   def __init__(self, username, password):
-    self.username = username.title()
+    self.username = username
     self.set_password(password)
     self.score = 0
 

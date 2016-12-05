@@ -19,4 +19,4 @@ def getsuggestions(question):
         """
     return [unicodedata.normalize('NFKD', i).encode('ascii','ignore').replace("i love my", "").lstrip() \
                 for i in result[1]]
-print getsuggestions("i love")
+print getsuggestions("programmers are")

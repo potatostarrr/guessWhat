@@ -1,3 +1,11 @@
+function myFunction(x) {
+	$.post( "/postmethod", {
+		highscore: x,
+		user: $("#username").text()
+	});
+}
+
+
 
 //callback function to return google suggestion
 function addScript(u){ 
@@ -8,7 +16,7 @@ function addScript(u){
 function getQueryGoogle(term, callback){
    var id="i"+Math.random().toString(36).slice(2);
    getQueryGoogle[id]=function(data){ callback(data);delete getQueryGoogle[id];};
-   addScript( "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%3D%22http%3A%2F%2Fsuggestqueries.google.com%2Fcomplete%2Fsearch%3Fclient%3Dfirefox%26q%3D"+
+   addScript( "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%3D%22https%3A%2F%2Fsuggestqueries.google.com%2Fcomplete%2Fsearch%3Fclient%3Dfirefox%26q%3D"+
    encodeURIComponent(term)+
   "%22%20&format=json&callback=getQueryGoogle."+id );
 }
@@ -35,11 +43,16 @@ String.prototype.replaceAll = function(str1, str2, ignore)
 function update(){
 		$("#top5").empty();
 		$("#top10").empty();
+		
+		
+		
 		for(i= 0; i < Math.min(answer.length, 5); i++){
-			$("#top5").append("<li class= 'list-group-item list-group-item-info' id=" + i.toString() + ">"+ "???" +  "</li>");	
+			s = "_";for (j = 1;j<answer[i].length;j++){s += " _"};
+			$("#top5").append("<li class= 'list-group-item list-group-item-info' id=" + i.toString() + ">"+ s +  "</li>");	
 		};
 		for(i= 5; i < Math.min(answer.length, 10); i++){
-			$("#top10").append("<li class= 'list-group-item list-group-item-info' id=" + i.toString() + ">"+"???"+  "</li>");	
+			s = "_";for (j = 1;j<answer[i].length;j++){s += " _"};
+			$("#top10").append("<li class= 'list-group-item list-group-item-info' id=" + i.toString() + ">"+s+  "</li>");	
 		};
 }
 
@@ -110,12 +123,14 @@ $(function() {
 					if (score > highscore){
 						highscore = score;
 						$("#highscore").text(score.toString())
+						myFunction(score);
 					}
-					canswer++;
-					if (canswer == answer.length){
+					cnumber++;
+					if (cnumber == answer.length){
 						chance++;
 						$('#skip').click();
 					}
+					$("#useranswer" ).val('');
 				}
 			}	
 		});
@@ -123,9 +138,13 @@ $(function() {
 	$("#restart").click(function(){
 		$("#restartArea").toggleClass("show hidden");
 		$("#answerArea").toggleClass("hidden show");
-		chance = 3;
 		score = 0;
+		cnumber = 0;
 		questionIndex++;
+		chance = 11;
+		
+		$("#chance").text(chance.toString());
+		$('#skip').click();
 		$("#useranswer" ).val('');
 	})
 

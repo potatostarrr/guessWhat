@@ -5,32 +5,32 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="../static/style.css" type='text/css'>
 		<link rel="stylesheet" href="../static/indexstyle.css" type='text/css'>
+		<link rel="stylesheet" href="../static/style.css" type='text/css'>
 </head>
 
 <body>
 	<div class= "row">
-		<div class = "col-md-3"></div>
-		<div class = "col-md-5 text-center">
+		<div class = "col-md-4"></div>
+		<div class = "col-md-4 text-center">
 			<h1>Welcome to GuessWhat!</h1>
 			<p>Guess What's the most popular searching on the Internet</p>
 		</div>
-		<div class="container">
-			<div class="row">
-				{% if session["username"]%}
-					<form action="{{ url_for("index") }}" method=post>
-						{{ signoutform.hidden_tag() }}
-						{{ signoutform.submit(class_ = "btn btn-primary btn-lg") }}
-					</form>
-					<p> Welcome back! {{session["username"]}} </p>
-				{% else %}
-					<p class="text-center"><a href="#" class="btn btn-primary btn-lg" role="button" data-toggle="modal" data-target="#login-modal">Open Login Modal</a></p>
-				{% endif %}
+
+			<div class="col-md-4 container">
+					{% if session["username"]%}
+						<form action="{{ url_for("index") }}" method=post pull-right>
+							{{ signoutform.hidden_tag() }}
+							{{ signoutform.submit(class_ = "btn btn-primary btn-lg"  ) }}
+						</form>
+						<p class="pull-right"> Welcome back! <p id = "username" class="pull-right">{{session["username"]}}</p> </p>
+					{% else %}
+						<p class="text-center"><a href="#" class="btn btn-primary btn-lg pull-right " role="button" data-toggle="modal" data-target="#login-modal">Login Here</a></p>
+					{% endif %}
 			</div>
-		</div>
+
 	</div>
-	<div class = 'row'>
+	<div class = 'row top-buffer' >
 	<div class= 'col-md-3'></div>
 	<div class= 'col-md-2'>
 		<p class = "text-central"> Get 2 points for each Top 5 result!

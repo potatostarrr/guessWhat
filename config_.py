@@ -4,4 +4,4 @@ ONE = []
 SIX = []
 ORDER = []
 SECRET_KEY = "This should be secret"
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:password@localhost/myguessusers"
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://ba5d9cecc8a70e:f2002911@us-cdbr-iron-east-04.cleardb.net/heroku_dad49fc6f29d036"
